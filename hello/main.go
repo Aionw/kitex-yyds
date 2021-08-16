@@ -19,30 +19,17 @@ import (
 	"log"
 
 	"github.com/kitex-yyds/kitex-yyds/hello/kitex_gen/echo/echoservice"
+	"github.com/kitex-yyds/kitex-yyds/tracer/server"
 )
 
 func main() {
-	svr := echoservice.NewServer(new(handler))
+	tracerOpt, closer := server.InitJaeger("kitex-server")
+	defer closer.Close()
+
+	svr := echoservice.NewServer(new(handler), tracerOpt)
 	if err := svr.Run(); err != nil {
 		log.Println("server stopped with error:", err)
 	} else {
 		log.Println("server stopped")
 	}
-
-	// cli, err := echoservice.NewClient("p.s.m")
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// req := &echo.Request{Msg: "hello"}
-	// svrStream, err := cli.ServerSideStreaming(context.Background(), req)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// for {
-	// 	resp, err := svrStream.Recv()
-	// 	if err != nil {
-	// 		panic(err)
-	// 	}
-	// 	// resp.Msg == "world"
-	// }
 }
