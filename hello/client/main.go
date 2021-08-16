@@ -24,10 +24,14 @@ import (
 	"github.com/cloudwego/kitex/transport"
 	"github.com/kitex-yyds/kitex-yyds/hello/kitex_gen/echo"
 	"github.com/kitex-yyds/kitex-yyds/hello/kitex_gen/echo/echoservice"
+	tclient "github.com/kitex-yyds/kitex-yyds/tracer/client"
 )
 
 func main() {
-	cli, err := echoservice.NewClient("p.s.m", client.WithHostPorts("127.0.0.1:8888"), client.WithTransportProtocol(transport.GRPC))
+	tracerOpt, closer := tclient.InitJaeger("kitex-server")
+	defer closer.Close()
+
+	cli, err := echoservice.NewClient("p.s.m", client.WithHostPorts("127.0.0.1:8888"), client.WithTransportProtocol(transport.GRPC), tracerOpt)
 	if err != nil {
 		panic(err)
 	}
