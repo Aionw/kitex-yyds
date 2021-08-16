@@ -1,4 +1,4 @@
-module github.com/cloudwego/kitex-examples/hello
+module github.com/kitex-yyds/kitex-yyds/hello
 
 go 1.16
 

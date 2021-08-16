@@ -2,8 +2,8 @@
 package echoservice
 
 import (
-	"github.com/cloudwego/kitex-examples/hello/kitex_gen/echo"
 	"github.com/cloudwego/kitex/server"
+	"github.com/kitex-yyds/kitex-yyds/hello/kitex_gen/echo"
 )
 
 // NewServer creates a server.Server with the given handler and options.

@@ -16,7 +16,9 @@
 package main
 
 import (
-	echo "github.com/cloudwego/kitex-examples/hello/kitex_gen/echo"
+	"fmt"
+
+	echo "github.com/kitex-yyds/kitex-yyds/hello/kitex_gen/echo"
 )
 
 type handler struct{}
@@ -27,6 +29,12 @@ func (handler) ClientSideStreaming(stream echo.EchoService_ClientSideStreamingSe
 		if err != nil {
 			return err
 		}
+		fmt.Println("client recv")
+		resp := &echo.Response{Msg: "world"}
+		if err := stream.SendMsg(resp); err != nil {
+			return err
+		}
+		fmt.Println("client send")
 	}
 }
 
@@ -37,6 +45,12 @@ func (handler) ServerSideStreaming(req *echo.Request, stream echo.EchoService_Se
 		if err := stream.Send(resp); err != nil {
 			return err
 		}
+		fmt.Println("server recv")
+		req := &echo.Request{Msg: "world"}
+		if err := stream.SendMsg(req); err != nil {
+			return err
+		}
+		fmt.Println("server send")
 	}
 }
 

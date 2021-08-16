@@ -5,10 +5,10 @@ package echoservice
 import (
 	"context"
 	"fmt"
-	"github.com/cloudwego/kitex-examples/hello/kitex_gen/echo"
 	"github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
 	"github.com/cloudwego/kitex/pkg/streaming"
+	"github.com/kitex-yyds/kitex-yyds/hello/kitex_gen/echo"
 	"google.golang.org/protobuf/proto"
 )
 

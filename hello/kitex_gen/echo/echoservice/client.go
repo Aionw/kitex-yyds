@@ -4,11 +4,11 @@ package echoservice
 
 import (
 	"context"
-	"github.com/cloudwego/kitex-examples/hello/kitex_gen/echo"
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/client/callopt"
 	"github.com/cloudwego/kitex/pkg/streaming"
-	// "github.com/cloudwego/kitex/transport"
+	_ "github.com/cloudwego/kitex/transport"
+	"github.com/kitex-yyds/kitex-yyds/hello/kitex_gen/echo"
 )
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.

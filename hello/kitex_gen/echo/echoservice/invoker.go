@@ -3,8 +3,8 @@
 package echoservice
 
 import (
-	"github.com/cloudwego/kitex-examples/hello/kitex_gen/echo"
 	"github.com/cloudwego/kitex/server"
+	"github.com/kitex-yyds/kitex-yyds/hello/kitex_gen/echo"
 )
 
 // NewInvoker creates a server.Invoker with the given handler and options.
