@@ -3,8 +3,8 @@
 package hello
 
 import (
-	"github.com/cloudwego/kitex-examples/hello/kitex_gen/api"
 	"github.com/cloudwego/kitex/server"
+	"github.com/kitex-yyds/kitex-yyds/hello/kitex_gen/api"
 )
 
 // NewServer creates a server.Server with the given handler and options.

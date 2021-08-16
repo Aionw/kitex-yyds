@@ -16,28 +16,33 @@
 package main
 
 import (
-	"context"
-	"fmt"
+	"log"
 
-	echo "github.com/cloudwego/kitex-examples/hello/kitex_gen/echo"
-	"github.com/cloudwego/kitex-examples/hello/kitex_gen/echo/echoservice"
+	"github.com/kitex-yyds/kitex-yyds/hello/kitex_gen/echo/echoservice"
 )
 
 func main() {
-	cli, err := echoservice.NewClient("p.s.m")
-	if err != nil {
-		panic(err)
+	svr := echoservice.NewServer(new(handler))
+	if err := svr.Run(); err != nil {
+		log.Println("server stopped with error:", err)
+	} else {
+		log.Println("server stopped")
 	}
-	req := &echo.Request{Msg: "hello"}
-	svrStream, err := cli.ServerSideStreaming(context.Background(), req)
-	if err != nil {
-		panic(err)
-	}
-	for {
-		resp, err := svrStream.Recv()
-		if err != nil {
-			panic(err)
-		}
-		fmt.Printf("resp:%v\n", resp)
-	}
+
+	// cli, err := echoservice.NewClient("p.s.m")
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// req := &echo.Request{Msg: "hello"}
+	// svrStream, err := cli.ServerSideStreaming(context.Background(), req)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// for {
+	// 	resp, err := svrStream.Recv()
+	// 	if err != nil {
+	// 		panic(err)
+	// 	}
+	// 	// resp.Msg == "world"
+	// }
 }

@@ -17,13 +17,17 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"time"
 
-	"github.com/cloudwego/kitex-examples/hello/kitex_gen/echo"
-	"github.com/cloudwego/kitex-examples/hello/kitex_gen/echo/echoservice"
+	"github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex/transport"
+	"github.com/kitex-yyds/kitex-yyds/hello/kitex_gen/echo"
+	"github.com/kitex-yyds/kitex-yyds/hello/kitex_gen/echo/echoservice"
 )
 
 func main() {
-	cli, err := echoservice.NewClient("p.s.m")
+	cli, err := echoservice.NewClient("p.s.m", client.WithHostPorts("127.0.0.1:8888"), client.WithTransportProtocol(transport.GRPC))
 	if err != nil {
 		panic(err)
 	}
@@ -36,5 +40,13 @@ func main() {
 		if err := cliStream.Send(req); err != nil {
 			panic(err)
 		}
+		fmt.Printf("request: %v\n", req)
+		resp := &echo.Response{}
+		err = cliStream.RecvMsg(resp)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("response: %v\n", resp)
+		time.Sleep(time.Second)
 	}
 }
