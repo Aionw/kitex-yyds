@@ -11,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-
 package main
 
 import (
@@ -20,18 +18,26 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/kitex-yyds/kitex-yyds/consul"
+	"github.com/kitex-yyds/kitex-yyds/kitex_gen/echo"
+	"github.com/kitex-yyds/kitex-yyds/kitex_gen/echo/echoservice"
+
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/transport"
-	"github.com/kitex-yyds/kitex-yyds/hello/kitex_gen/echo"
-	"github.com/kitex-yyds/kitex-yyds/hello/kitex_gen/echo/echoservice"
 	tclient "github.com/kitex-yyds/kitex-yyds/tracer/client"
 )
 
 func main() {
-	tracerOpt, closer := tclient.InitJaeger("kitex-server")
+	tracerOpt, closer := tclient.InitJaeger("hello-client")
 	defer closer.Close()
+	consul.Init()
 
-	cli, err := echoservice.NewClient("p.s.m", client.WithHostPorts("127.0.0.1:8888"), client.WithTransportProtocol(transport.GRPC), tracerOpt)
+	cli, err := echoservice.NewClient("hello",
+		client.WithTransportProtocol(transport.GRPC),
+		tracerOpt,
+		client.WithResolver(&consul.ConsulResolver{
+			ConsulClient: consul.Client,
+		}))
 	if err != nil {
 		panic(err)
 	}

@@ -18,10 +18,32 @@ package main
 import (
 	"fmt"
 
-	echo "github.com/kitex-yyds/kitex-yyds/hello/kitex_gen/echo"
+	"github.com/cloudwego/kitex/client"
+	"github.com/kitex-yyds/kitex-yyds/consul"
+	"github.com/kitex-yyds/kitex-yyds/hello_thrift/kitex_gen/api/hellothrift"
+	"github.com/kitex-yyds/kitex-yyds/kitex_gen/echo"
+	tclient "github.com/kitex-yyds/kitex-yyds/tracer/client"
 )
 
 type handler struct{}
+
+var Client hellothrift.Client
+
+func Init() {
+	var err error
+	tracerOpt, closer := tclient.InitJaeger("hello-thrift-client")
+	defer closer.Close()
+	Client, err = hellothrift.NewClient(
+		"hello-thrift",
+		tracerOpt,
+		client.WithResolver(&consul.ConsulResolver{
+			ConsulClient: consul.Client,
+		}),
+	)
+	if err != nil {
+		panic(err)
+	}
+}
 
 func (handler) ClientSideStreaming(stream echo.EchoService_ClientSideStreamingServer) (err error) {
 	for {

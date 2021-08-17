@@ -16,20 +16,21 @@
 package main
 
 import (
-	"log"
-
-	"github.com/kitex-yyds/kitex-yyds/hello/kitex_gen/echo/echoservice"
+	"github.com/kitex-yyds/kitex-yyds/consul"
+	"github.com/kitex-yyds/kitex-yyds/kitex_gen/echo/echoservice"
 	"github.com/kitex-yyds/kitex-yyds/tracer/server"
 )
 
 func main() {
-	tracerOpt, closer := server.InitJaeger("kitex-server")
+	Init()
+	tracerOpt, closer := server.InitJaeger("hello-server")
+	consul.Init()
+	consul.Register("hello", 8888)
 	defer closer.Close()
 
 	svr := echoservice.NewServer(new(handler), tracerOpt)
-	if err := svr.Run(); err != nil {
-		log.Println("server stopped with error:", err)
-	} else {
-		log.Println("server stopped")
+	err := svr.Run()
+	if err != nil {
+		panic(err)
 	}
 }
