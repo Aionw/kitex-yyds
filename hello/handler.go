@@ -16,7 +16,9 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"github.com/kitex-yyds/kitex-yyds/hello_thrift/kitex_gen/api"
 
 	"github.com/cloudwego/kitex/client"
 	"github.com/kitex-yyds/kitex-yyds/consul"
@@ -46,6 +48,10 @@ func Init() {
 }
 
 func (handler) ClientSideStreaming(stream echo.EchoService_ClientSideStreamingServer) (err error) {
+	_, err = Client.Echo(context.Background(), &api.Request{Message: "hello streaming"})
+	if err != nil {
+		return err
+	}
 	for {
 		_, err := stream.Recv()
 		if err != nil {
@@ -61,6 +67,7 @@ func (handler) ClientSideStreaming(stream echo.EchoService_ClientSideStreamingSe
 }
 
 func (handler) ServerSideStreaming(req *echo.Request, stream echo.EchoService_ServerSideStreamingServer) (err error) {
+	_, err = Client.Echo(context.Background(), &api.Request{Message: "hello streaming2"})
 	_ = req
 	for {
 		resp := &echo.Response{Msg: "world"}
@@ -77,6 +84,7 @@ func (handler) ServerSideStreaming(req *echo.Request, stream echo.EchoService_Se
 }
 
 func (handler) BidiSideStreaming(stream echo.EchoService_BidiSideStreamingServer) (err error) {
+	_, err = Client.Echo(context.Background(), &api.Request{Message: "hello streaming3"})
 	go func() {
 		for {
 			_, err := stream.Recv()
