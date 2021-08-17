@@ -21,6 +21,7 @@ import (
 	"github.com/kitex-yyds/kitex-yyds/consul"
 	"github.com/kitex-yyds/kitex-yyds/kitex_gen/echo"
 	"github.com/kitex-yyds/kitex-yyds/kitex_gen/echo/echoservice"
+	"github.com/kitex-yyds/kitex-yyds/middleware"
 
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/transport"
@@ -35,6 +36,7 @@ func main() {
 	cli, err := echoservice.NewClient("hello",
 		client.WithTransportProtocol(transport.GRPC),
 		tracerOpt,
+		client.WithMiddlewareBuilder(middleware.LogMiddlewareBuilder),
 		client.WithResolver(&consul.ConsulResolver{
 			ConsulClient: consul.Client,
 		}))
